@@ -1,0 +1,106 @@
+<div role="tabpanel" class="tab-pane">
+    <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--12-col" >
+            <div class="row">
+                <div class='col-sm-4' *ngIf='config.opt && config.opt.filterBySearch'>
+                    <div class="row">
+                        <div class="form-inline">
+                            <span>Search: </span>
+                            <input type="search" [formControl]='search' class="form-control" aria-label="..." placeholder="">
+                    </div>
+                    </div>
+                </div>
+                <div *ngIf='config.opt && config.opt.pageSizes' class="col-sm-6 pull-right">
+                    <div class="form-group pull-right" role="status" aria-live="polite">
+                        Showing
+                        <select name="paths-table_length" (change)='changePageSize($event)' [(ngModel)]='currentPageSize' aria-controls="paths-table"
+                            class="input-sm">
+                                <option *ngFor='let pageSize of config.opt.pageSizes' [value]="pageSize">{{pageSize}}</option>
+                            </select> of {{config.opt.total}} entries
+                    </div>
+                </div>
+            </div>
+            <div class="row" *ngIf='config.rows.length'>
+                <table class="mdl-shadow--2dp mp-responsive-table mp-table-lms--training">
+                    <thead>
+                        <tr>
+                            <th (click)='onClickForHeaderSorting($event, header)' *ngFor="let header of config.headers" class="mdl-data-table__cell--non-numeric"
+                                [ngClass]="[(header.styleClass || ''), 'anchor-pointer']">
+                                <span-cmp *ngIf="header.type==='span'" (onClick)='header.onClick && item.onClick($event)' [data]='header'></span-cmp>
+                                <checkbox-cmp *ngIf="header.type==='checkbox'" (onClick)='onHeaderCheckBoxClick($event)' [data]='header'></checkbox-cmp>
+                                <span *ngIf='header.sortKey' class="pull-right">
+                                    <i *ngIf='header.sort && header.sort.direction === 1' class="fa fa-long-arrow-up" aria-hidden="true"></i>
+                                    <i *ngIf='header.sort && header.sort.direction === -1' class="fa fa-long-arrow-down" aria-hidden="true"></i>
+                                </span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let row of config.rows | paginate: pagination; let i = index;">
+                            <td [mpHeader]='config.headers[ci].content' [ngClass]='item.colStyleClass' *ngFor="let item of row.columns; let ci = index;" class="mdl-data-table__cell--non-numeric">
+                                <routerLink-cmp *ngIf="item.type==='routerLink'" (onClick)='item.onClick && item.onClick($event)' [data]='item'></routerLink-cmp>
+                                <anchor-cmp *ngIf="item.type==='anchor'" (onClick)='item.onClick && item.onClick($event)' [data]='item'></anchor-cmp>
+                                <date-cmp *ngIf="item.type==='date'" (onClick)='item.onClick && item.onClick($event)' [data]='item'></date-cmp>
+                                <checkbox-cmp *ngIf="item.type==='checkbox'" (onClick)='onInputCmpClick($event, item, i)' [data]='item'></checkbox-cmp>
+                                <div-cmp *ngIf="item.type==='div'" (onClick)='item.onClick && item.onClick($event)' [data]='item'></div-cmp>
+                                <span-cmp *ngIf="item.type==='span'" (onClick)='item.onClick && item.onClick($event)' [data]='item'></span-cmp>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+            <div class='row' *ngIf='config.rows.length'>
+                <div class="col-sm-12 col-md-4" *ngIf="config.opts.actions">
+                    <br>
+                    <div class="btn-group dropup">
+                        <button [disabled]='!isAnySelected' type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            Bulk Action <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li *ngFor="let action of config.opts.actions" [attr.role]="action.role==='separator'" [ngClass]="{divider: action.role==='separator'}">
+                                <a class="clickable" *ngIf="action.role==='action'" (click)='isAnySelected && action.onClick && action.onClick()' type="button">{{action.content}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class='col-sm-12 col-md-8 pull-right'>
+                    <br>
+                    <pagination-controls #paginate id='server' (pageChange)="pageChange($event);">
+                        <div class="custom-pagination dataTables_paginate paging_full_numbers pull-right" id="courses-table_paginate">
+
+                            <ul class="mp-pagination pagination pagination-sm">
+
+                                <li class="pagination-previous paginate_button first" [class.disabled]="paginate.isFirstPage()" aria-controls="courses-table"
+                                    tabindex="0" id="courses-table_first">
+                                    <a class="anchor-pointer" *ngIf="!paginate.isFirstPage()" (click)="paginate.previous()">
+                                        <i class="glyphicon glyphicon-step-backward"></i>
+                                    </a>
+                                </li>
+
+                                <li *ngFor="let page of paginate.pages" [class.active]="paginate.getCurrent() === page.value" class="paginate_button" aria-controls="courses-table"
+                                    tabindex="{{ page.label }}">
+                                    <a class="anchor-pointer" (click)="paginate.setCurrent(page.value)">{{ page.label }}</a>
+                                </li>
+
+                                <li [class.disabled]="paginate.isLastPage()" class="paginate_button next pagination-next" aria-controls="courses-table" tabindex="0"
+                                    id="courses-table_next">
+                                    <a class="anchor-pointer" *ngIf="!paginate.isLastPage()" (click)="paginate.next()">
+                                        <i class="glyphicon glyphicon-step-forward"></i>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </pagination-controls>
+                </div>
+            </div>
+
+            <br>
+            <div *ngIf='!config.rows.length' class="row center">
+              <center><em>No data available</em></center>
+            </div>
+        </div>
+    </div>
+</div>

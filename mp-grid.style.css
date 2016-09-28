@@ -1,0 +1,26 @@
+table.mp-responsive-table .lms-toolset-col {
+    text-align: right;
+    width: 1%;
+    padding: 8px 0;
+}
+
+table.mp-responsive-table tbody .lms-toolset-col:last-child {
+    padding: 8px 16px 8px 0px;
+}
+
+/deep/ table a{
+    cursor: pointer;
+}
+
+@media only screen and (max-width: 760px), (max-device-width: 1024px) and (min-device-width: 768px){
+table.mp-responsive-table .lms-toolset-col {
+    width: auto;
+    display: inline-block;
+    padding: 8px 0;
+}
+
+}
+
+.anchor-pointer {
+  cursor: pointer;
+}
