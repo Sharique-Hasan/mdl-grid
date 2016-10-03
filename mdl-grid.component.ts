@@ -1,13 +1,13 @@
 import {
-  Component,
-  Input,
-  Output,
-  EventEmitter,
-  SimpleChange
+    Component,
+    Input,
+    Output,
+    EventEmitter,
+    SimpleChange
 } from '@angular/core';
 import {
-  PaginationService,
-  IPaginationInstance
+    PaginationService,
+    IPaginationInstance
 } from 'ng2-pagination';
 import { Config } from './config';
 import { Row } from './rows';
@@ -15,14 +15,14 @@ import { FormControl } from '@angular/forms';
 import * as _ from 'lodash';
 
 @Component({
-  selector: 'mp-grid',
+  selector: 'mdl-grid',
   styleUrls: [
-    './mp-grid.style.css'
+    './mdl-grid.style.css'
   ],
-  templateUrl: './mp-grid.template.html'
+  templateUrl: './mdl-grid.template.html'
 })
 
-export class MPGridComponent {
+export class MdlGrid {
   currentPage: number = 1;
   total: number = 0;
   search: FormControl;
@@ -30,11 +30,12 @@ export class MPGridComponent {
   delay: number = 200;
   pages: Array<Array<any>>;
   rows: Array<Array<Row>>;
+  id: string = 'paginate' + _.random(0, 10000) + _.random(0, 1000);
   @Input() config: Config;
   @Output('onSearch') onSearch: EventEmitter<any> = new EventEmitter<string>();
   private currentPageSize = 10;
   private pagination: IPaginationInstance = {
-    id: 'server',
+    id: this.id,
     itemsPerPage: this.currentPageSize,
     currentPage: this.currentPage
   };
@@ -48,9 +49,9 @@ export class MPGridComponent {
       throw new Error('Config is not defined');
     }
     this.paginationService.register(this.pagination);
-    this.paginationService.setItemsPerPage('server', this.config.opts && this.config.opts.defaultPageSize || this.currentPageSize);
-    this.paginationService.setCurrentPage('server', this.config.opts.currentPage);
-    this.paginationService.setTotalItems('server', this.config.opts.total);
+    this.paginationService.setItemsPerPage(this.id, this.config.opts && this.config.opts.defaultPageSize || this.currentPageSize);
+    this.paginationService.setCurrentPage(this.id, this.config.opts.currentPage);
+    this.paginationService.setTotalItems(this.id, this.config.opts.total);
 
     this.search = new FormControl();
     const searchStream = this.search.valueChanges.debounceTime(this.delay);
@@ -75,10 +76,10 @@ export class MPGridComponent {
     this.config.opts.pageChangeEvent(this.pagination.currentPage, this.pagination.itemsPerPage);
   }
 
- /* ngOnChanges(change: { [propertyName: string]: SimpleChange }) {
-    this.paginationService.setCurrentPage('server', change.config.currentValue.opts.currentPage);
-    this.paginationService.setTotalItems('server', change.config.currentValue.opts.total);
-  }*/
+  ngOnChanges(change: { [propertyName: string]: SimpleChange }) {
+    this.paginationService.setCurrentPage(this.id, change.config.currentValue.opts.currentPage);
+    this.paginationService.setTotalItems(this.id, change.config.currentValue.opts.total);
+  }
 
   onInputCmpClick(event, item, index) {
     let page = this.config.opts.data;
