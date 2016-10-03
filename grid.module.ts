@@ -1,10 +1,11 @@
+
 import { NgModule } from '@angular/core';
-import { CoreModule} from 'core';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { MPGridComponent, COMPONENT_TYPES } from "./index";
 import { HeaderDirective } from './lib/header-attribute.directive';
-import {
-  PaginationService
-} from 'ng2-pagination';
+import { Ng2PaginationModule, PaginationService } from 'ng2-pagination';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,11 @@ import {
     ...COMPONENT_TYPES
   ],
   imports: [
-    CoreModule
+    BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    Ng2PaginationModule
   ],
   exports: [
     MPGridComponent

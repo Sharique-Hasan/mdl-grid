@@ -1,0 +1,32 @@
+{
+  "name": "mdl-grid",
+  "version": "0.0.0",
+  "description": "Angular 2 grid module designed with material design lite",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sharique-Hasan/mdl-grid.git"
+  },
+  "keywords": [
+    "angular2",
+    "grid"
+  ],
+  "author": "Sharique Hasan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Sharique-Hasan/mdl-grid/issues"
+  },
+  "homepage": "https://github.com/Sharique-Hasan/mdl-grid#readme",
+  "dependencies": {
+    "@angular/common": "2.0.0",
+    "@angular/core": "2.0.0",
+    "@angular/forms": "2.0.0",
+    "@angular/platform-browser": "2.0.0",
+    "ng2-pagination": "^0.4.1",
+    "lodash": "^4.13.1",
+    "@angular/router": "3.0.0"
+  }
+}
